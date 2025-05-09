@@ -72,7 +72,6 @@ export default function CreateOffer() {
             setOfferDate("");
             setDiscountValue(0);
             closeModal();
-            alert("Offer created successfully!");
         }, 800);
     };
     
