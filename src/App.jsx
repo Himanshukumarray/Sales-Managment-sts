@@ -14,6 +14,7 @@ import Dashboard from './pages/Dashboard';
 import Orders from './pages/Orders';
  import Suppliers from './pages/Suppliers';
  import InventoryManagement from './InventoryManagment';
+ import PermissionPage from './Components/Term&condition';
  
 
 // import SupplierManager from './Components/SupplierManager';
@@ -23,6 +24,7 @@ function App() {
     <Router>
       <div className="pb-16"> {/* Add padding to account for the fixed bottom navbar */}
         <NavBar />
+        
         <Routes>
           {/* Define routes for different pages */}
           <Route path="/home" element={<Home />} />
@@ -39,6 +41,7 @@ function App() {
           <Route path="/Dashboard" element={<Dashboard/>} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/inventory" element={<InventoryManagement />} />
+          <Route path="/permission" element={<PermissionPage />} />
           {/* Add more routes as needed */}
         </Routes>
       </div>

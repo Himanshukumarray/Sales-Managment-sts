@@ -45,7 +45,7 @@ const Dashboard = () => {
     recentActivity: [
       { type: 'order', message: 'New order #ORD-7895 received from Tech Solutions Inc.', time: '10 minutes ago' },
       { type: 'supplier', message: 'Global Supplies updated their inventory catalog.', time: '2 hours ago' },
-      { type: 'alert', message: 'Order #ORD-7831 is marked as delayed.', time: '4 hours ago' },
+      // { type: 'alert', message: 'Order #ORD-7831 is marked as delayed.', time: '4 hours ago' },
       { type: 'order', message: 'Order #ORD-7890 has been completed and delivered.', time: '5 hours ago' },
       { type: 'supplier', message: 'New supplier "Quality Products" has been approved.', time: 'Yesterday' },
     ]
@@ -109,14 +109,13 @@ const Dashboard = () => {
   ];
 
   const formatCurrency = (amount) => new Intl.NumberFormat('en-US', {
-    style: 'currency', currency: 'USD', maximumFractionDigits: 0
+    style: 'currency', currency: 'INR', maximumFractionDigits: 0
   }).format(amount);
 
   const COLORS = ['#4ade80', '#facc15', '#f87171'];
 
   const handleNavigation = (path) => {
     console.log(`Navigating to: ${path}`);
-    alert(`Navigating to: ${path}`);
   };
 
   if (loading) {
@@ -156,7 +155,7 @@ const Dashboard = () => {
             title="Total Orders"
             value={stats.totalOrders}
             icon={<ShoppingCart size={20} className="text-blue-600" />}
-            subtitle={`+${stats.newOrdersToday} today`}
+            subtitle={`${stats.newOrdersToday} today`}
             subtitleColor="green"
           />
           {/* Revenue */}
@@ -211,27 +210,114 @@ const Dashboard = () => {
           {/* Order Status Pie Chart */}
           <div className="bg-white rounded-lg shadow">
             <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-              <h2 className="font-bold">Order Status</h2>
+              <h2 className="font-bold text-lg text-gray-800">Order Status Overview</h2>
               <ChevronRight size={16} className="text-gray-400" />
             </div>
-            <div className="p-4">
-              <ResponsiveContainer width="100%" height={250}>
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+              <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
                   <Pie
                     data={stats.orderStatusChart}
                     cx="50%"
                     cy="50%"
-                    labelLine={false}
-                    label={entry => `${entry.name} (${entry.value})`}
+                    innerRadius={60}
                     outerRadius={80}
                     dataKey="value"
+                    nameKey="name"
+                    labelLine={true}
+                    label={({ name, percent, cx, cy, midAngle, innerRadius, outerRadius }) => {
+                      const RADIAN = Math.PI / 180;
+                      const radius = outerRadius + 20;
+                      const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                      const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                      
+                      return (
+                        <text 
+                          x={x} 
+                          y={y} 
+                          fill={COLORS[stats.orderStatusChart.findIndex(item => item.name === name) % COLORS.length]}
+                          textAnchor={x > cx ? 'start' : 'end'} 
+                          dominantBaseline="central"
+                          className="text-xs font-medium"
+                        >
+                          {`${name} (${(percent * 100).toFixed(0)}%)`}
+                        </text>
+                      );
+                    }}
                   >
                     {stats.orderStatusChart.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell 
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]} 
+                        stroke="#fff"
+                        strokeWidth={2}
+                      />
                     ))}
                   </Pie>
+                  <Tooltip 
+                    content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                        const data = payload[0].payload;
+                        return (
+                          <div className="bg-white p-2 border border-gray-200 shadow-lg rounded">
+                            <p className="font-semibold" style={{ color: payload[0].color }}>
+                              {data.name}
+                            </p>
+                            <p className="text-gray-700">
+                              {data.value} orders ({((data.value / stats.orderStatusChart.reduce((sum, item) => sum + item.value, 0)) * 100).toFixed(1)}%)
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {data.name === 'Completed' ? 'Successfully delivered' : 
+                              data.name === 'Pending' ? 'In progress' : 'Requires attention'}
+                            </p>
+                          </div>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                  <Legend
+                    verticalAlign="bottom"
+                    align="center"
+                    layout="horizontal"
+                    iconType="circle"
+                    iconSize={10}
+                    formatter={(value, entry) => (
+                      <span className="text-gray-600 text-sm">{value}</span>
+                    )}
+                  />
                 </PieChart>
               </ResponsiveContainer>
+
+              <div className="flex flex-col justify-center space-y-5">
+                {stats.orderStatusChart.map((status, index) => (
+                  <div key={index} className="flex items-start space-x-4 p-3 hover:bg-gray-50 rounded-md transition-colors duration-150">
+                    <div
+                      className="w-4 h-4 mt-1 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                    ></div>
+                    <div className="flex-grow">
+                      <p className="text-sm font-semibold text-gray-800">{status.name}</p>
+                      <p className="text-sm text-gray-500">{status.value} orders processed</p>
+                      <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
+                        <div 
+                          className="h-1.5 rounded-full" 
+                          style={{ 
+                            width: `${(status.value / stats.orderStatusChart.reduce((sum, item) => sum + item.value, 0)) * 100}%`,
+                            backgroundColor: COLORS[index % COLORS.length]
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <button 
+                  className="mt-4 text-sm text-blue-600 hover:text-blue-800 flex items-center"
+                  onClick={() => handleNavigation('/orders')}
+                >
+                  View all orders <ChevronRight size={16} className="ml-1" />
+                </button>
+              </div>
             </div>
           </div>
         </div>

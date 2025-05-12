@@ -101,6 +101,13 @@ const NavBar = () => {
               <ListOrderedIcon className="w-4 h-4" /> inventory
             </Link>
             <Link
+              to="/permission"
+              className="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+              onClick={() => setMenuOpen(false)}
+            >
+              <Settings className="w-4 h-4" /> Terms & Conditions
+            </Link>
+            <Link
               to="/settings"
               className="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
               onClick={() => setMenuOpen(false)}
