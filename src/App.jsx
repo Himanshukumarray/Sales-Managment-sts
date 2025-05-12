@@ -10,12 +10,12 @@ import NavBar from './Components/NavBar';
 import OrderDetails from './Components/OrderDetails';
 
 import SupplierForm from './Components/SupplierForm';
-import Dashboard from './pages/Dashboard';  
+import Dashboard from './pages/Dashboard';
 import Orders from './pages/Orders';
- import Suppliers from './pages/Suppliers';
- import InventoryManagement from './InventoryManagment';
- import PermissionPage from './Components/Term&condition';
- 
+import Suppliers from './pages/Suppliers';
+import InventoryManagement from './InventoryManagment';
+import PermissionPage from './Components/Term&condition';
+import SignupForm from './Components/login';
 
 // import SupplierManager from './Components/SupplierManager';
 
@@ -24,24 +24,25 @@ function App() {
     <Router>
       <div className="pb-16"> {/* Add padding to account for the fixed bottom navbar */}
         <NavBar />
-        
+
         <Routes>
           {/* Define routes for different pages */}
           <Route path="/home" element={<Home />} />
-          <Route path="/" element={<Dashboard/>} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/create-offer" element={<CreateOffer />} />
           <Route path="/my-offers" element={<MyOffers />} />
           <Route path="/insight" element={<SalesInsightPage />} />
           <Route path="/bill" element={<Bill />} />
           <Route path="/customCard" element={<CustomCardComponent />} />
-          <Route path="/orders/:id" element={<OrderDetails/>} />
-          
-          <Route path="/suppliers" element={<Suppliers/>} />
-          <Route path="/supplier/add" element={<SupplierForm/>} />
-          <Route path="/Dashboard" element={<Dashboard/>} />
+          <Route path="/orders/:id" element={<OrderDetails />} />
+
+          <Route path="/suppliers" element={<Suppliers />} />
+          <Route path="/supplier/add" element={<SupplierForm />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/inventory" element={<InventoryManagement />} />
           <Route path="/permission" element={<PermissionPage />} />
+          <Route path="/signup" element={<SignupForm />} /> 
           {/* Add more routes as needed */}
         </Routes>
       </div>
