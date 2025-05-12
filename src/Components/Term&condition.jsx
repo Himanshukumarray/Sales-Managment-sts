@@ -133,7 +133,7 @@ const PermissionPage = () => {
                   </div>
                 </div>
                 
-                <div className="bg-gray-50 p-4 rounded-lg shadow-sm group relative cursor-pointer hover:bg-gray-100 transition-colors">
+                {/* <div className="bg-gray-50 p-4 rounded-lg shadow-sm group relative cursor-pointer hover:bg-gray-100 transition-colors">
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-medium text-gray-800">Age Verification</h3>
@@ -148,12 +148,11 @@ const PermissionPage = () => {
                       />
                     </label>
                   </div>
-                  {/* Purpose tooltip */}
                   <div className="absolute invisible group-hover:visible bg-gray-800 text-white p-3 rounded-md shadow-lg text-sm w-full max-w-xs right-0 mt-2 z-10 transition-opacity duration-200 opacity-0 group-hover:opacity-100">
                     <div className="absolute right-3 -top-2 w-4 h-4 bg-gray-800 transform rotate-45"></div>
                     <p>Age verification is required to comply with legal regulations and ensure you can access age-restricted content and services on our platform.</p>
                   </div>
-                </div>
+                </div> */}
                 
                 <div className="bg-gray-50 p-4 rounded-lg shadow-sm group relative cursor-pointer hover:bg-gray-100 transition-colors">
                   <div className="flex items-center justify-between">
